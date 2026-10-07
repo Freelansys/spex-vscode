@@ -37,10 +37,10 @@ from concept select {
   A user interface that allow user to add, remove, list and complete @Todo objects.
 };
 
-realize TodoConcept as (
+realize TodoConcept as {
   database: TodoDatabaseConcept,
   ui: TodoUserInterfaceConcept,
-);
+};
 
 create FileDataEnv as
 from environment select {
@@ -67,12 +67,12 @@ from (path: string, id: string) -> () select {
   remove the @Todo entry in the JSON file at &path that matches with &id.
 };
 
-realize TodoDatabaseConcept as (
+realize TodoDatabaseConcept as {
   read: ReadTodosFromJsonFile,
   insert: InsertTodoIntoJsonFile,
   update: UpdateTodoInJsonFile,
   delete: DeleteTodoFromJsonFile,
-) in FileDataEnv;
+} in FileDataEnv;
 
 create CliEnv as
 from environment select {
