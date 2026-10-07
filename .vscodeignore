@@ -4,5 +4,6 @@ scripts/**
 test/**
 node_modules/**
 out/**/*.map
+out/**/*.test.mjs
 tsconfig.json
 *.vsix
