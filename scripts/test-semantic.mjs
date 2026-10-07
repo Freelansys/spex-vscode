@@ -15,7 +15,7 @@ await esbuild.build({
   logLevel: 'silent',
 });
 
-const { computeSemanticTokens } = await import(pathToFileURL(outfile));
+const { computeSemanticTokens, parseError } = await import(pathToFileURL(outfile));
 
 let failures = 0;
 function ok(cond, label) {
@@ -75,6 +75,21 @@ function makeHelpers(source, tokens) {
   ok(Array.isArray(broken) && broken.length === 0, 'parse error -> no tokens');
   const brokenMidFile = computeSemanticTokens('create Ok as string;\ncreate ??? bad;');
   ok(brokenMidFile.length === 0, 'lex error mid-file -> no tokens');
+}
+
+{
+  ok(parseError(fs.readFileSync(path.join(root, 'test/fixtures/sample.spex'), 'utf8')) === null, 'parseError: sample.spex clean');
+  ok(parseError(fs.readFileSync(path.join(root, 'test/fixtures/todo.spex'), 'utf8')) === null, 'parseError: todo.spex clean');
+
+  const ambiguous = parseError('realize X as ( a: A );');
+  ok(ambiguous !== null && ambiguous.message.includes('ambiguous realization target'), 'parseError: ambiguous message');
+  ok(ambiguous.start.line === 1 && ambiguous.start.column === 14 && ambiguous.end.offset === 21, 'parseError: ambiguous location');
+
+  const lexed = parseError('create ??? ;');
+  ok(lexed !== null && lexed.message.includes('Lexing errors'), 'parseError: lexing message');
+  ok(lexed.start.column === 8 && lexed.end.column === 11, 'parseError: lexing location');
+
+  ok(parseError('create in as string;').start.line === 1, 'parseError: has location');
 }
 
 console.log(failures ? `\n${failures} failed` : '\nall passed');

@@ -28,6 +28,8 @@ reference the grammar is derived from.
     fields/parameters → `parameter`
   - Builtin types and unresolved names are left to the grammar (cross-file
     resolution comes with the language server)
+- Diagnostics: parse/lex errors from `spex-parser` appear as red squiggles
+  (debounced, updated while typing — no language server needed)
 
 ## Development
 
@@ -60,7 +62,8 @@ npm test
 Semantic highlighting runs in-process today: `src/extension.ts` registers a
 `DocumentSemanticTokensProvider` that delegates to the pure walker in
 `src/semantic.ts` (parse with `spex-parser` → declarations → references →
-`@refs`). When diagnostics, go-to-definition, hover or cross-file reference
+`@refs`), and parse-error diagnostics in `src/diagnostics.ts`. When
+diagnostics, go-to-definition, hover or cross-file reference
 resolution are needed:
 
 1. Add a `server/` package (e.g. `vscode-languageserver`) and move

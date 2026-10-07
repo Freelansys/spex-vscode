@@ -4,8 +4,10 @@ import {
   TOKEN_MODIFIERS,
   TOKEN_TYPES,
 } from './semantic';
+import { registerDiagnostics } from './diagnostics';
 
 export function activate(context: vscode.ExtensionContext): void {
+  registerDiagnostics(context);
   const legend: vscode.SemanticTokensLegend = {
     tokenTypes: [...TOKEN_TYPES],
     tokenModifiers: [...TOKEN_MODIFIERS],

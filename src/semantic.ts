@@ -28,6 +28,38 @@ const BUILTINS = new Set([
 
 const IDENT = '[a-zA-Z_][a-zA-Z0-9_]*';
 
+export type ParseErrorInfo = {
+  message: string;
+  start: { offset: number; line: number; column: number };
+  end: { offset: number; line: number; column: number };
+};
+
+export function parseError(source: string): ParseErrorInfo | null {
+  try {
+    parseToAst(source);
+    return null;
+  } catch (err) {
+    const e = err as { message?: string; location?: Location | null };
+    const loc = e.location ?? null;
+    const fallback = { offset: 0, line: 1, column: 1 };
+    const start = loc?.start ?? fallback;
+    const end = loc?.end ?? fallback;
+    return {
+      message: e.message ?? String(err),
+      start: {
+        offset: start.offset ?? 0,
+        line: start.line ?? 1,
+        column: start.column ?? 1,
+      },
+      end: {
+        offset: end.offset ?? 0,
+        line: end.line ?? 1,
+        column: end.column ?? 1,
+      },
+    };
+  }
+}
+
 function identifierAfter(
   source: string,
   location: Location,
