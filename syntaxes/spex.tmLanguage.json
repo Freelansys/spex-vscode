@@ -1,0 +1,150 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Spex",
+  "scopeName": "source.spex",
+  "patterns": [
+    { "include": "#line-comment" },
+    { "include": "#block-comment" },
+    { "include": "#select-block" },
+    { "include": "#keyword-control" },
+    { "include": "#keyword-set-operator" },
+    { "include": "#operator" },
+    { "include": "#punctuation" },
+    { "include": "#string-single" },
+    { "include": "#string-double" },
+    { "include": "#number" },
+    { "include": "#boolean" },
+    { "include": "#regexp" },
+    { "include": "#base-type" }
+  ],
+  "repository": {
+    "line-comment": {
+      "name": "comment.line.double-dash.spex",
+      "match": "--.*$"
+    },
+    "block-comment": {
+      "name": "comment.block.spex",
+      "begin": "/\\*",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.comment.begin.spex" }
+      },
+      "end": "\\*/",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.comment.end.spex" }
+      }
+    },
+    "string-single": {
+      "name": "string.quoted.single.spex",
+      "begin": "'",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.string.begin.spex" }
+      },
+      "end": "'|$",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.string.end.spex" }
+      },
+      "patterns": [{ "include": "#escape" }]
+    },
+    "string-double": {
+      "name": "string.quoted.double.spex",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.string.begin.spex" }
+      },
+      "end": "\"|$",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.string.end.spex" }
+      },
+      "patterns": [{ "include": "#escape" }]
+    },
+    "escape": {
+      "name": "constant.character.escape.spex",
+      "match": "\\\\."
+    },
+    "number": {
+      "name": "constant.numeric.spex",
+      "match": "\\b\\d+(?:\\.\\d+)?\\b"
+    },
+    "boolean": {
+      "name": "constant.language.boolean.spex",
+      "match": "(?i)\\b(?:true|false)\\b"
+    },
+    "select-block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.select.begin.spex" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.select.end.spex" }
+      },
+      "contentName": "meta.constraint.natural-language.spex",
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#ref" },
+        {
+          "match": "^\\s*\\d+\\.",
+          "name": "markup.list.numbered.spex"
+        },
+        {
+          "match": "^\\s*-\\s",
+          "name": "markup.list.unnumbered.spex"
+        }
+      ]
+    },
+    "ref": {
+      "name": "variable.other.reference.spex",
+      "match": "@[a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*"
+    },
+    "regexp": {
+      "name": "string.regexp.spex",
+      "begin": "/",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.string.begin.spex" }
+      },
+      "end": "(/)([a-z]*)|$",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.string.end.spex" },
+        "2": { "name": "keyword.other.regexp.flag.spex" }
+      },
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#regexp-class" }
+      ]
+    },
+    "regexp-class": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.character-class.begin.spex" }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.character-class.end.spex" }
+      },
+      "patterns": [{ "include": "#escape" }]
+    },
+    "keyword-control": {
+      "name": "keyword.control.declaration.spex",
+      "match": "(?i)\\b(?:create|as|from|select|generate|import|realize|include|in)\\b"
+    },
+    "keyword-set-operator": {
+      "name": "keyword.operator.word.spex",
+      "match": "(?i)\\b(?:union|intersect|except)\\b"
+    },
+    "base-type": {
+      "name": "storage.type.builtin.spex",
+      "match": "(?i)\\b(?:artifact|concept|environment|string|number|bool|unit)\\b"
+    },
+    "operator": {
+      "name": "keyword.operator.spex",
+      "match": "->|\\|"
+    },
+    "punctuation": {
+      "patterns": [
+        { "match": "[,;:]", "name": "punctuation.separator.spex" },
+        { "match": "\\.", "name": "punctuation.accessor.spex" },
+        { "match": "[\\(\\)\\[\\]\\{\\}]", "name": "punctuation.definition.bracket.spex" }
+      ]
+    }
+  }
+}

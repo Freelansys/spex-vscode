@@ -1,0 +1,53 @@
+{
+  "name": "spex-vscode",
+  "displayName": "Spex",
+  "description": "Syntax highlighting for the Spex language.",
+  "version": "0.0.1",
+  "publisher": "raminbarati",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:spex"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "spex",
+        "aliases": [
+          "Spex",
+          "spex"
+        ],
+        "extensions": [
+          ".spex"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spex",
+        "scopeName": "source.spex",
+        "path": "./syntaxes/spex.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.75.0",
+    "spex-parser": "^0.8.0",
+    "typescript": "^5.4.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
+  }
+}

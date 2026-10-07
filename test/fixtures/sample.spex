@@ -1,0 +1,39 @@
+-- line comment
+/* block comment */
+
+import Todo from "todo.spex";
+include "config.json" as config;
+
+create TodoId as
+from string
+select {
+  are valid UUIDs
+};
+
+create Todo as (
+  id: TodoId,
+  title: string,
+  completed: bool
+);
+
+create AddTodo as
+from (title: string) -> Todo
+select {
+  1. generate a UUID for the todo id
+  2. call @CreateTodo using @title
+  3. return the created todo
+};
+
+create Digits as /\d+/i;
+create EvenInt as from number select ```
+if &number > 0 {
+  // gen: let $y be the square root of &number
+}
+```;
+
+create PyDouble as from number -> number select ```python
+return @n * 2
+```;
+
+realize TodoApp as TodoCli in Cli;
+generate TodoWeb in FlaskWebEnv;
