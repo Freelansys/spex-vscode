@@ -23,7 +23,7 @@ const registry = new Registry({
     if (scopeName === 'source.spex') {
       return JSON.parse(fs.readFileSync(grammarPath, 'utf8'));
     }
-    return null;
+    return { scopeName, patterns: [], repository: {} };
   },
 });
 

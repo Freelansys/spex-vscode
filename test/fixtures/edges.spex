@@ -1,0 +1,10 @@
+-- trailing comment without newline
+create Email as string[];
+create Opt as (a: string b: number,);
+create Empty as ();
+create Path as types.EmailAddress;
+create Choice as A | B;
+create Fn as (title: string) -> Email;
+import "config.json" as config;
+realize TodoWeb as { list: string } in FlaskWebEnv;
+generate TodoCli;
